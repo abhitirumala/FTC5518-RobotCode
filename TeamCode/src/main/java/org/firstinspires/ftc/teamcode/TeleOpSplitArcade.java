@@ -29,43 +29,48 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-
 /**
- * File Created by Abhiram T. (5518)
- * Version 1.1.1
- * Date: 11/2/2018
+ * This file contains an example of an iterative (Non-Linear) "OpMode".
+ * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
+ * The names of OpModes appear on the menu of the FTC Driver Station.
+ * When an selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
  *
- * Contents:
- * Split Arcade Style drive control with linear movement and rotation
- * Ability to change the speed multiplier from 1.0 to 0.5
- * arm, collector, and spool code
+ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
+ * It includes all the skeletal structure that all iterative OpModes contain.
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp Tank Drive Test1", group="Tele-Op")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="5518 TeleOp v3.0", group="TeleOp")
 //@Disabled
-public class TeleOpTankDriveTest1 extends OpMode
+public class TeleOpSplitArcade extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime      = new ElapsedTime();
-
-    //Motors
     private DcMotor leftFrontDrive   = null;
     private DcMotor rightFrontDrive  = null;
     private DcMotor leftBackDrive    = null;
     private DcMotor rightBackDrive   = null;
-    private DcMotor armPivot         = null;
-    private DcMotor spool            = null;
     private DcMotor collector        = null;
+    private DcMotor spool            = null;
+    private DcMotor arm              = null;
 
-    private double slowModeValue = 1.0;
     private boolean isOnA = false;
+    private double slowModeValue = 1.0;
 
+    /*
+     * Code to run ONCE when the driver hits INIT
+     */
     @Override
     public void init()
     {
@@ -74,21 +79,19 @@ public class TeleOpTankDriveTest1 extends OpMode
         // Initialize the hardware variables
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "1");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "2");
-        leftBackDrive   = hardwareMap.get(DcMotor.class, "3");
-        rightBackDrive  = hardwareMap.get(DcMotor.class, "0");
-
-        armPivot        = hardwareMap.get(DcMotor.class, "arm");
-        spool           = hardwareMap.get(DcMotor.class, "spool");
-        collector       = hardwareMap.get(DcMotor.class, "collector");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "3");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "0");
+        collector = hardwareMap.get(DcMotor.class, "collector");
+        spool = hardwareMap.get(DcMotor.class, "spool");
+        arm = hardwareMap.get(DcMotor.class, "arm");
 
         leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        armPivot.setDirection(DcMotor.Direction.FORWARD);
-        spool.setDirection(DcMotor.Direction.FORWARD);
         collector.setDirection(DcMotor.Direction.FORWARD);
+        arm.setDirection(DcMotor.Direction.FORWARD);
+        spool.setDirection(DcMotor.Direction.FORWARD);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -117,16 +120,14 @@ public class TeleOpTankDriveTest1 extends OpMode
      */
     @Override
     public void loop() {
-
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftFrontPower;
         double rightFrontPower;
         double leftBackPower;
         double rightBackPower;
 
-        //Slow-Mode - Switch between 100% and 50%
-        if(gamepad1.a && !isOnA)
-        {
+
+        if(gamepad1.a && !isOnA) {
             if(slowModeValue == 1.0)
                 slowModeValue = 0.5;
             else
@@ -135,6 +136,23 @@ public class TeleOpTankDriveTest1 extends OpMode
         }
         else if(!gamepad1.a)
             isOnA = false;
+
+        if(gamepad2.right_bumper)
+        {
+            collector.setPower(0.4);
+        }
+        else if (gamepad2.left_bumper)
+        {
+            collector.setPower(-0.4);
+        }
+        else
+        {
+            collector.setPower(0);
+        }
+
+        spool.setPower(gamepad2.right_stick_x*0.75);
+        arm.setPower(gamepad2.left_stick_y*0.70);
+
 
         // Code for Split-Arcade Driver Control
         double drive =  gamepad1.left_stick_y * slowModeValue;
@@ -149,23 +167,8 @@ public class TeleOpTankDriveTest1 extends OpMode
         leftBackDrive.setPower(leftBackPower);
         rightBackDrive.setPower(rightBackPower);
 
-        //Code for arm, collector and spool - arm is on right stick and spool is on left (for second controller)
-        double armPower = gamepad2.right_stick_y;
-        if (gamepad2.right_bumper)
-            collector.setPower(1.0);
-        else if (gamepad2.left_bumper)
-            collector.setPower(-0.5);
-        else
-            collector.setPower(0.0);
 
-        if (gamepad1.dpad_up)
-            spool.setPower(1);
-        else if (gamepad1.dpad_down)
-            spool.setPower(-1);
-        else
-            spool.setPower(0);
 
-        //TELEMETRY CODE
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Front Motors", "leftFront (%.2f), rightFront (%.2f), ", leftFrontPower, rightFrontPower);

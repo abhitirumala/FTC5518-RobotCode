@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -59,9 +60,9 @@ import java.util.Locale;
  * Write premature Autonomous to initialize basic operations
  */
 
-@TeleOp(name="Autonomous 2.0", group="Autonomous")
+@Autonomous(name="Autonomous Square 1.2", group="Autonomous")
 //@Disabled
-public class Autonomous_2 extends LinearOpMode
+public class AutonomousSquare extends LinearOpMode
 {
 
     // Declare OpMode members.

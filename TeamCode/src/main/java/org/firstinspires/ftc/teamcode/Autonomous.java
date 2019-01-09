@@ -66,7 +66,7 @@ import java.util.Locale;
  * Write premature Autonomous to initialize basic operations
  */
 
-@TeleOp(name="Autonomous 1.0", group="Autonomous")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Sampling Test 1.1", group="Autonomous")
 //@Disabled
 public class Autonomous extends LinearOpMode
 {
@@ -161,9 +161,15 @@ public class Autonomous extends LinearOpMode
         sleep (1000);
         manualTurn(0, false);
 
+//        manualTurn(-1, false);
+//        sleep (1000);
+//        manualTurn(0, false);
+    
+        //turnToAngle(false, 50, 1);
+
         while(!detector.getAligned())
         {
-            manualTurn(0.75, true);
+            manualTurn(0.4, true);
         }
 
         powerMotors(-0.5, 1500);
