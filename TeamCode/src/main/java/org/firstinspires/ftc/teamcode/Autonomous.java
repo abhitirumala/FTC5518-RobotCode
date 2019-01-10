@@ -164,7 +164,7 @@ public class Autonomous extends LinearOpMode
 //        manualTurn(-1, false);
 //        sleep (1000);
 //        manualTurn(0, false);
-    
+
         //turnToAngle(false, 50, 1);
 
         while(!detector.getAligned())
