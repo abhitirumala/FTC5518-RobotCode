@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -57,7 +58,7 @@ import java.util.Locale;
  * Maneuver: Robot drives in a square, turning after every second of travel
  */
 
-@TeleOp(name="Autonomous Test 1.4", group="Autonomous")
+@Autonomous(name="Autonomous Square 1.0", group="Autonomous")
 //@Disabled
 public class AutoGyroTankDriveTest extends LinearOpMode
 {
