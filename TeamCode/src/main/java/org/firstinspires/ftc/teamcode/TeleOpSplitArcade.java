@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import org.openftc.revextensions2.ExpansionHubEx;
+import org.openftc.revextensions2.RevExtensions2;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -51,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="5518 TeleOp v3.0", group="TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="5518 TeleOp v3.1", group="TeleOp")
 //@Disabled
 public class TeleOpSplitArcade extends OpMode
 {
@@ -67,6 +69,8 @@ public class TeleOpSplitArcade extends OpMode
 
     private boolean isOnA = false;
     private double slowModeValue = 1.0;
+
+    private ExpansionHubEx expansionHub1;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -92,6 +96,10 @@ public class TeleOpSplitArcade extends OpMode
         collector.setDirection(DcMotor.Direction.FORWARD);
         arm.setDirection(DcMotor.Direction.FORWARD);
         spool.setDirection(DcMotor.Direction.FORWARD);
+
+        RevExtensions2.init();
+        expansionHub1 = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
+        expansionHub1.setPhoneChargeEnabled(true);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
