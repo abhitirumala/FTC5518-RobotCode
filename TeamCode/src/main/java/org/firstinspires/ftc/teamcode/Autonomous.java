@@ -51,7 +51,11 @@ import com.disnodeteam.dogecv.DogeCV;
  */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Blue Crater 1.0", group="Autonomous")
+=======
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous FINAL", group="Autonomous")
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
 =======
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous FINAL", group="Autonomous")
 >>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
@@ -98,8 +102,13 @@ public class Autonomous extends LinearOpMode
         rightBackDrive = hardwareMap.get(DcMotor.class, "0");
         //mrGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
         //gyro = (IntegratingGyroscope) mrGyro;
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -147,6 +156,7 @@ public class Autonomous extends LinearOpMode
         sleep (500);
         powerMotors(-0.75, 2000);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     }
 
@@ -205,8 +215,27 @@ public class Autonomous extends LinearOpMode
         manualTurn(0, true);
 
         powerMotors(1, 5000);
+=======
+        manualTurn(0.4, false);
+        sleep ((int) angleTime*1000);
+        manualTurn(0, false);
+
+        manualTurn(0.75, true);
+        sleep (1250);
+        manualTurn(0, true);
+        //gyroTurn(0, 0.5);
+
+        powerMotors(0.75, 250);
+        manualTurn(0.75, true);
+        sleep(1750);
+        manualTurn(0, true);
+
+        powerMotors(1, 5000);
 
     }
+
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
+
 
 >>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
 
@@ -233,6 +262,7 @@ public class Autonomous extends LinearOpMode
             leftBackDrive.setPower(-power);
             rightBackDrive.setPower(power);
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
     }
 
@@ -323,6 +353,9 @@ public class Autonomous extends LinearOpMode
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
         telemetry.addAction(new Runnable() { @Override public void run()
+=======
+        else
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
 =======
         else
 >>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
