@@ -69,6 +69,7 @@ import java.util.Locale;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Blue Crater 1.0", group="Autonomous")
 =======
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous FINAL", group="Autonomous")
@@ -76,6 +77,9 @@ import java.util.Locale;
 =======
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous FINAL", group="Autonomous")
 >>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
+=======
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Sampling Test 1.1", group="Autonomous")
+>>>>>>> parent of ab7d22d... 1/19 changes
 =======
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Sampling Test 1.1", group="Autonomous")
 >>>>>>> parent of ab7d22d... 1/19 changes
@@ -115,6 +119,7 @@ public class Autonomous extends LinearOpMode
         leftBackDrive = hardwareMap.get(DcMotor.class, "3");
         rightBackDrive = hardwareMap.get(DcMotor.class, "0");
 <<<<<<< HEAD
+<<<<<<< HEAD
         //mrGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
         //gyro = (IntegratingGyroscope) mrGyro;
 <<<<<<< HEAD
@@ -130,10 +135,16 @@ public class Autonomous extends LinearOpMode
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 =======
 
+=======
+
+>>>>>>> parent of ab7d22d... 1/19 changes
         leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+<<<<<<< HEAD
+>>>>>>> parent of ab7d22d... 1/19 changes
+=======
 >>>>>>> parent of ab7d22d... 1/19 changes
 
         /*
@@ -210,6 +221,9 @@ public class Autonomous extends LinearOpMode
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of ab7d22d... 1/19 changes
 =======
 >>>>>>> parent of ab7d22d... 1/19 changes
     }
@@ -219,6 +233,7 @@ public class Autonomous extends LinearOpMode
         if (isRight)
         {
             telemetry.update();
+<<<<<<< HEAD
 <<<<<<< HEAD
             targetAngle = -targetAngle;
 
@@ -258,17 +273,16 @@ public class Autonomous extends LinearOpMode
         manualTurn(0.4, false);
         sleep ((int) angleTime*1000);
         manualTurn(0, false);
+=======
+>>>>>>> parent of ab7d22d... 1/19 changes
 
-        manualTurn(0.75, true);
-        sleep (1250);
-        manualTurn(0, true);
-        //gyroTurn(0, 0.5);
+            double turnSpeedMultiplier;
 
-        powerMotors(0.75, 250);
-        manualTurn(0.75, true);
-        sleep(1750);
-        manualTurn(0, true);
+            while ((Math.abs(angles.firstAngle - targetAngle) > 5) && opModeIsActive()) {
+                telemetry.update();
+                turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.35;
 
+<<<<<<< HEAD
         powerMotors(1, 5000);
 =======
         manualTurn(0.4, false);
@@ -327,6 +341,45 @@ public class Autonomous extends LinearOpMode
         }
 >>>>>>> parent of ab7d22d... 1/19 changes
 
+=======
+                leftFrontDrive.setPower(turnPower * turnSpeedMultiplier);
+                rightFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
+                leftBackDrive.setPower(turnPower * turnSpeedMultiplier);
+                rightBackDrive.setPower(-turnPower * turnSpeedMultiplier);
+            }
+
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+            sleep(500);
+        }
+        else
+        {
+            telemetry.update();
+            targetAngle = -targetAngle;
+            double turnSpeedMultiplier;
+
+            while ((Math.abs(angles.firstAngle - targetAngle) > 1) && opModeIsActive()) {
+                telemetry.update();
+                turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.40;
+
+                leftFrontDrive.setPower(turnPower * turnSpeedMultiplier);
+                rightFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
+                leftBackDrive.setPower(turnPower * turnSpeedMultiplier);
+                rightBackDrive.setPower(-turnPower * turnSpeedMultiplier);
+            }
+
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+            sleep(500);
+        }
+
+>>>>>>> parent of ab7d22d... 1/19 changes
     }
 
     private void powerMotors(double power, int timeInMS)
@@ -347,11 +400,22 @@ public class Autonomous extends LinearOpMode
         if (isRight)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            leftFrontDrive.setPower(power);
+            rightFrontDrive.setPower(-power);
+            leftBackDrive.setPower(power);
+            rightBackDrive.setPower(-power);
+        }
+        else
+        {
+>>>>>>> parent of ab7d22d... 1/19 changes
             leftFrontDrive.setPower(-power);
             rightFrontDrive.setPower(power);
             leftBackDrive.setPower(-power);
             rightBackDrive.setPower(power);
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     }
@@ -366,67 +430,60 @@ public class Autonomous extends LinearOpMode
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+=======
     }
 
-    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS)
+    private void composeGyroTelemetry()
     {
-        int newFrontLeftTarget;
-        int newRearLeftTarget;
-        int newFrontRightTarget;
-        int newRearRightTarget;
 
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
+        // At the beginning of each telemetry update, grab a bunch of data
+        // from the IMU that we will then display in separate lines.
+        telemetry.addAction(new Runnable() { @Override public void run()
+        {
+            // Acquiring the angles is relatively expensive; we don't want
+            // to do that in each of the three items that need that info, as that's
+            // three times the necessary expense.
+            angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        }
+        });
 
-            // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = leftFrontDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRearLeftTarget = leftBackDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newFrontRightTarget = rightFrontDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newRearRightTarget = rightBackDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            leftFrontDrive.setTargetPosition(newFrontLeftTarget);
-            leftBackDrive.setTargetPosition(newRearLeftTarget);
-            rightFrontDrive.setTargetPosition(newFrontRightTarget);
-            rightBackDrive.setTargetPosition(newRearRightTarget);
+        telemetry.addLine()
+                .addData("status", new Func<String>() {
+                    @Override public String value() {
+                        return imu.getSystemStatus().toShortString();
+                    }
+                })
+                .addData("calib", new Func<String>() {
+                    @Override public String value() {
+                        return imu.getCalibrationStatus().toString();
+                    }
+                });
 
-            // Turn On RUN_TO_POSITION
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        telemetry.addLine()
+                .addData("heading", new Func<String>() {
+                    @Override public String value() {
+                        return formatAngle(angles.angleUnit, angles.firstAngle);
+                    }
+                })
+                .addData("roll", new Func<String>() {
+                    @Override public String value() {
+                        return formatAngle(angles.angleUnit, angles.secondAngle);
+                    }
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override public String value() {
+                        return formatAngle(angles.angleUnit, angles.thirdAngle);
+                    }
+                });
+>>>>>>> parent of ab7d22d... 1/19 changes
+    }
 
-            // reset the timeout time and start motion.
-            runtime.reset();
-            leftFrontDrive.setPower(Math.abs(speed));
-            leftBackDrive.setPower(Math.abs(speed));
-            rightFrontDrive.setPower(Math.abs(speed));
-            rightBackDrive.setPower(Math.abs(speed));
+    private String formatAngle(AngleUnit angleUnit, double angle)
+    {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+    }
 
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftBackDrive.isBusy() && rightBackDrive.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newFrontRightTarget,
-                        newRearLeftTarget, newRearRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                        leftFrontDrive.getCurrentPosition(),
-                        rightFrontDrive.getCurrentPosition(), leftBackDrive.getCurrentPosition(),
-                        rightBackDrive.getCurrentPosition());
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            leftFrontDrive.setPower(0);
-            leftBackDrive.setPower(0);
-            rightFrontDrive.setPower(0);
-            rightBackDrive.setPower(0);
-
+<<<<<<< HEAD
             // Turn off RUN_TO_POSITION
             leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -515,6 +572,8 @@ public class Autonomous extends LinearOpMode
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
+=======
+>>>>>>> parent of ab7d22d... 1/19 changes
     private String formatDegrees(double degrees)
     {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));

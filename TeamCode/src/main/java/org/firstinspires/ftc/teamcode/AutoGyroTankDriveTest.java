@@ -149,6 +149,7 @@ public class AutoGyroTankDriveTest extends LinearOpMode
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 turnToAngle(true,-90,1);
             else if (multiplier == 2)
                 turnToAngle(true, 0,1);
@@ -162,6 +163,11 @@ public class AutoGyroTankDriveTest extends LinearOpMode
             else if (multiplier == 2)
                 turnToAngle(true, 180,1);
 >>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
+=======
+                turnToAngle(true,270,1);
+            else if (multiplier == 2)
+                turnToAngle(true, 360,1);
+>>>>>>> parent of ab7d22d... 1/19 changes
 =======
                 turnToAngle(true,270,1);
             else if (multiplier == 2)
