@@ -122,7 +122,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
 
         while(!detector.getAligned())
         {
-            manualTurn(0.4, true, 1);
+            timedTurn(0.4, true, 1);
         }
 
         encoderDrive(0.5, 18, 18, 10);
@@ -155,7 +155,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
-    private void manualTurn(double power, boolean isRight, int timeInMS) {
+    private void timedTurn(double power, boolean isRight, int timeInMS) {
         if (isRight) {
             leftFrontDrive.setPower(-power);
             rightFrontDrive.setPower(power);
