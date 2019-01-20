@@ -150,7 +150,7 @@ public class TeleOpSplitArcade extends OpMode
             collector.setPower(0);
         }
 
-        spool.setPower(gamepad2.right_stick_x*0.75);
+        spool.setPower(gamepad2.right_stick_x);
         arm.setPower(gamepad2.left_stick_y*0.70);
 
 

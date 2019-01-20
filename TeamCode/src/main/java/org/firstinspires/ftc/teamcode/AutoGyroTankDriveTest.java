@@ -71,7 +71,7 @@ public class AutoGyroTankDriveTest extends LinearOpMode
     private DcMotor backRightDrive = null;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1680 ;    // eg: AndyMark Motor Encoder
-    private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;     // This is < 1.0 if geared UP
+    private static final double     DRIVE_GEAR_REDUCTION    = 0.6 ;     // This is < 1.0 if geared UP
     private static final double     WHEEL_DIAMETER_INCHES   = 5.0 ;     // For figuring circumference
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
@@ -148,11 +148,11 @@ public class AutoGyroTankDriveTest extends LinearOpMode
         {
 
             if (multiplier == 1)
-                turnToAngle(true,270,1);
+                turnToAngle(true,90,1);
             else if (multiplier == 2)
-                turnToAngle(true, 360,1);
+                turnToAngle(true, 180,1);
             else if (multiplier == 3)
-                turnToAngle(true, 90,1);
+                turnToAngle(true, -90,1);
             else
                 turnToAngle(true, 0, 1);
 
@@ -269,7 +269,8 @@ public class AutoGyroTankDriveTest extends LinearOpMode
 
             while ((Math.abs(angles.firstAngle - targetAngle) > 5) && opModeIsActive()) {
                 telemetry.update();
-                turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.35;
+                //turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.35;
+                turnSpeedMultiplier=1;
 
                 frontLeftDrive.setPower(turnPower * turnSpeedMultiplier);
                 frontRightDrive.setPower(-turnPower * turnSpeedMultiplier);
@@ -292,7 +293,8 @@ public class AutoGyroTankDriveTest extends LinearOpMode
 
             while ((Math.abs(angles.firstAngle - targetAngle) > 1) && opModeIsActive()) {
                 telemetry.update();
-                turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.40;
+                //turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.40;
+                turnSpeedMultiplier=1;
 
                 frontLeftDrive.setPower(turnPower * turnSpeedMultiplier);
                 frontRightDrive.setPower(-turnPower * turnSpeedMultiplier);
