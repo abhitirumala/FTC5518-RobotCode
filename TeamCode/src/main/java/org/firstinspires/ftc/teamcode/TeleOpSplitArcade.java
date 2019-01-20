@@ -139,11 +139,11 @@ public class TeleOpSplitArcade extends OpMode
 
         if(gamepad2.right_bumper)
         {
-            collector.setPower(0.4);
+            collector.setPower(0.5);
         }
         else if (gamepad2.left_bumper)
         {
-            collector.setPower(-0.4);
+            collector.setPower(-0.5);
         }
         else
         {
@@ -151,7 +151,7 @@ public class TeleOpSplitArcade extends OpMode
         }
 
         spool.setPower(gamepad2.right_stick_x);
-        arm.setPower(gamepad2.left_stick_y*0.8);
+        arm.setPower(gamepad2.left_stick_y);
 
 
         // Code for Split-Arcade Driver Control
@@ -171,6 +171,7 @@ public class TeleOpSplitArcade extends OpMode
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Slow-mode: ", isOnA);
         telemetry.addData("Front Motors", "leftFront (%.2f), rightFront (%.2f), ", leftFrontPower, rightFrontPower);
         telemetry.addData("Back Motors", "leftBack (%.2f), rightBack (%.2f), ", leftBackPower, rightBackPower);
 
