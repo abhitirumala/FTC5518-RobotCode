@@ -30,49 +30,38 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.ReadWriteFile;
-
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
-import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-import com.disnodeteam.dogecv.detectors.roverrukus.SamplingOrderDetector;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import java.io.File;
-import java.util.Locale;
 
 /**
  * File Created bu Abhiram T. (5518)
- * Version 1.0
+ * Version 3.0
  * Date: 1/23/2018
  *
- * Contents:
- * Write premature Autonomous to initialize basic operations
+ *
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Sampling Test 1.1", group="Autonomous")
+<<<<<<< HEAD
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous Blue Crater 1.0", group="Autonomous")
+=======
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous FINAL", group="Autonomous")
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
 //@Disabled
 public class Autonomous extends LinearOpMode
 {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime turnTime = new ElapsedTime();
 
     //Motors
     private DcMotor leftFrontDrive   = null;
@@ -80,12 +69,22 @@ public class Autonomous extends LinearOpMode
     private DcMotor leftBackDrive    = null;
     private DcMotor rightBackDrive   = null;
 
+    private static final double     COUNTS_PER_MOTOR_REV    = 1680 ;    // eg: AndyMark Motor Encoder
+    private static final double     DRIVE_GEAR_REDUCTION    = 0.6 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 5.0 ;     // For figuring circumference
+    private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
+
     //Gyro
-    private BNO055IMU imu;
-    private Orientation angles;
+    //private IntegratingGyroscope gyro;
+    //private ModernRoboticsI2cGyro mrGyro;
 
     //DogeCV Alignment Detector
     private GoldAlignDetector detector;
+
+    private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: AndyMark Motor Encoder
+    private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 5.0 ;     // For figuring circumference
+    private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -97,68 +96,38 @@ public class Autonomous extends LinearOpMode
         rightFrontDrive = hardwareMap.get(DcMotor.class, "2");
         leftBackDrive = hardwareMap.get(DcMotor.class, "3");
         rightBackDrive = hardwareMap.get(DcMotor.class, "0");
+        //mrGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        //gyro = (IntegratingGyroscope) mrGyro;
 
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         /*
          * Save GyroSensor Calibration Data
          */
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.loggingEnabled = true;
-        parameters.loggingTag     = "IMU";
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+//        telemetry.addData("Gyro: ", "Do not touch Gyro Calibrating");
+//        telemetry.update();
+//        mrGyro.calibrate();
+//        while (mrGyro.isCalibrating()) {
+//        }
+//        telemetry.log().clear();
+//        telemetry.log().add("Gyro Calibrated. Press Start.");
 
-        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
-
-        String filename = "AdafruitIMUCalibration.json";
-        File file = AppUtil.getInstance().getSettingsFile(filename);
-        ReadWriteFile.writeFile(file, calibrationData.serialize());
-        telemetry.log().add("saved to '%s'", filename);
-
-        //Read Calibration Data
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu.initialize(parameters);
-        composeGyroTelemetry();
-
-        // Set up detector
-        detector = new GoldAlignDetector(); // Create detector
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance(), 1, false); // Initialize it with the app context and camera
-        detector.useDefaults(); // Set detector to use default settings
-
-        // Optional tuning
-        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
-        detector.downscale = 0.4; // How much to downscale the input frames
-
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
-        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005; //
-
-        detector.ratioScorer.weight = 5; //
-        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
-
-        detector.enable(); // Start the detector!
-
-
+        // set up gold detector
+        initializeGoldAlignDetector();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 100);
 
+        powerMotors(0.5, 500);
 
-        manualTurn(1, false);
-        sleep (1000);
+        //gyroTurn(-50, 0.5);
+        manualTurn(0.75, false);
+        sleep (1500);
         manualTurn(0, false);
 
 //        manualTurn(-1, false);
@@ -167,13 +136,18 @@ public class Autonomous extends LinearOpMode
 
         //turnToAngle(false, 50, 1);
 
+        turnTime.reset();
         while(!detector.getAligned())
         {
             manualTurn(0.4, true);
         }
+        double angleTime = turnTime.time();
 
-        powerMotors(-0.5, 1500);
+        powerMotors(0.75, 2000);
+        sleep (500);
+        powerMotors(-0.75, 2000);
 
+<<<<<<< HEAD
     }
 
     private void turnToAngle(boolean isRight, double targetAngle, double turnPower)
@@ -181,51 +155,61 @@ public class Autonomous extends LinearOpMode
         if (isRight)
         {
             telemetry.update();
+            targetAngle = -targetAngle;
 
-            double turnSpeedMultiplier;
-
-            while ((Math.abs(angles.firstAngle - targetAngle) > 5) && opModeIsActive()) {
+            while (!(angles.firstAngle < targetAngle + 5 && angles.firstAngle > targetAngle - 10) && opModeIsActive()) {
                 telemetry.update();
-                turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.35;
 
-                leftFrontDrive.setPower(turnPower * turnSpeedMultiplier);
-                rightFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
-                leftBackDrive.setPower(turnPower * turnSpeedMultiplier);
-                rightBackDrive.setPower(-turnPower * turnSpeedMultiplier);
+                leftFrontDrive.setPower(turnPower);
+                rightFrontDrive.setPower(-turnPower);
+                leftBackDrive.setPower(turnPower);
+                rightBackDrive.setPower(-turnPower);
             }
 
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
-
-            sleep(500);
         }
         else
         {
             telemetry.update();
-            targetAngle = -targetAngle;
-            double turnSpeedMultiplier;
 
-            while ((Math.abs(angles.firstAngle - targetAngle) > 1) && opModeIsActive()) {
+            while (!(angles.firstAngle < targetAngle + 5 && angles.firstAngle > targetAngle - 10) && opModeIsActive()) {
                 telemetry.update();
-                turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.40;
 
-                leftFrontDrive.setPower(turnPower * turnSpeedMultiplier);
-                rightFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
-                leftBackDrive.setPower(turnPower * turnSpeedMultiplier);
-                rightBackDrive.setPower(-turnPower * turnSpeedMultiplier);
+                leftFrontDrive.setPower(-turnPower);
+                rightFrontDrive.setPower(turnPower);
+                leftBackDrive.setPower(-turnPower);
+                rightBackDrive.setPower(turnPower);
             }
 
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
-
-            sleep(500);
         }
+=======
+        manualTurn(0.4, false);
+        sleep ((int) angleTime*1000);
+        manualTurn(0, false);
+
+        manualTurn(0.75, true);
+        sleep (1250);
+        manualTurn(0, true);
+        //gyroTurn(0, 0.5);
+
+        powerMotors(0.75, 250);
+        manualTurn(0.75, true);
+        sleep(1750);
+        manualTurn(0, true);
+
+        powerMotors(1, 5000);
 
     }
+
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
+
 
     private void powerMotors(double power, int timeInMS)
     {
@@ -244,17 +228,92 @@ public class Autonomous extends LinearOpMode
     {
         if (isRight)
         {
-            leftFrontDrive.setPower(power);
-            rightFrontDrive.setPower(-power);
-            leftBackDrive.setPower(power);
-            rightBackDrive.setPower(-power);
-        }
-        else
-        {
             leftFrontDrive.setPower(-power);
             rightFrontDrive.setPower(power);
             leftBackDrive.setPower(-power);
             rightBackDrive.setPower(power);
+        }
+<<<<<<< HEAD
+    }
+
+    private void resetEncoders() {
+        leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS)
+    {
+        int newFrontLeftTarget;
+        int newRearLeftTarget;
+        int newFrontRightTarget;
+        int newRearRightTarget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newFrontLeftTarget = leftFrontDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRearLeftTarget = leftBackDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newFrontRightTarget = rightFrontDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newRearRightTarget = rightBackDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            leftFrontDrive.setTargetPosition(newFrontLeftTarget);
+            leftBackDrive.setTargetPosition(newRearLeftTarget);
+            rightFrontDrive.setTargetPosition(newFrontRightTarget);
+            rightBackDrive.setTargetPosition(newRearRightTarget);
+
+            // Turn On RUN_TO_POSITION
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            leftFrontDrive.setPower(Math.abs(speed));
+            leftBackDrive.setPower(Math.abs(speed));
+            rightFrontDrive.setPower(Math.abs(speed));
+            rightBackDrive.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftBackDrive.isBusy() && rightBackDrive.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newFrontRightTarget,
+                        newRearLeftTarget, newRearRightTarget);
+                telemetry.addData("Path2",  "Running at %7d :%7d",
+                        leftFrontDrive.getCurrentPosition(),
+                        rightFrontDrive.getCurrentPosition(), leftBackDrive.getCurrentPosition(),
+                        rightBackDrive.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            leftFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            sleep(500);
         }
     }
 
@@ -264,51 +323,156 @@ public class Autonomous extends LinearOpMode
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
         telemetry.addAction(new Runnable() { @Override public void run()
+=======
+        else
+>>>>>>> ab7d22d178ea757560e1a3e2458215bf1e7575ed
         {
-            // Acquiring the angles is relatively expensive; we don't want
-            // to do that in each of the three items that need that info, as that's
-            // three times the necessary expense.
-            angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            leftFrontDrive.setPower(power);
+            rightFrontDrive.setPower(-power);
+            leftBackDrive.setPower(power);
+            rightBackDrive.setPower(-power);
         }
-        });
-
-        telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override public String value() {
-                        return imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override public String value() {
-                        return imu.getCalibrationStatus().toString();
-                    }
-                });
-
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.thirdAngle);
-                    }
-                });
     }
 
-    private String formatAngle(AngleUnit angleUnit, double angle)
+//    private void gyroTurn(int targetAngle, double userTurnSpeed) {
+//        double currentPosition = mrGyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+//        double turnSpeed = userTurnSpeed;
+//        if (targetAngle < currentPosition) {
+//            while (targetAngle <= currentPosition) {
+//                leftFrontDrive.setPower(-turnSpeed);
+//                leftBackDrive.setPower(-turnSpeed);
+//                rightFrontDrive.setPower(turnSpeed);
+//                rightBackDrive.setPower(turnSpeed);
+//                currentPosition = mrGyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+//
+//
+//                telemetry.clearAll();
+//                telemetry.addData("Left Gyro Status", currentPosition);
+//                telemetry.update();
+//
+//            }
+//        } else if (targetAngle > currentPosition) {
+//            while (targetAngle >= currentPosition) {
+//                leftFrontDrive.setPower(turnSpeed);
+//                leftBackDrive.setPower(turnSpeed);
+//                rightFrontDrive.setPower(-turnSpeed);
+//                rightBackDrive.setPower(-turnSpeed);
+//                currentPosition = mrGyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+//
+//
+//                telemetry.clearAll();
+//                telemetry.addData("Right Gyro Status", currentPosition);
+//                telemetry.update();
+//            }
+//
+//        } else {
+//            telemetry.clearAll();
+//            telemetry.addData("Gyro Status", "Error");
+//            telemetry.update();
+//        }
+//
+//        leftFrontDrive.setPower(0);
+//        leftBackDrive.setPower(0);
+//        rightFrontDrive.setPower(0);
+//        rightBackDrive.setPower(0);
+//        telemetry.clearAll();
+//    }
+
+//    private void calibrateGyro()
+//    {
+//        telemetry.addData("Gyro: ", "Do nottouch while Gyro is Calibrating");
+//        telemetry.update();
+//        mrGyro.calibrate();
+//        while (mrGyro.isCalibrating())
+//        {}
+//        telemetry.clearAll();
+//    }
+
+    private void initializeGoldAlignDetector()
     {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+        detector = new GoldAlignDetector(); // Create detector
+        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance(), 1, false); // Initialize it with the app context and camera
+        detector.useDefaults(); // Set detector to use default settings
+
+        // Optional tuning
+        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+        detector.downscale = 0.4; // How much to downscale the input frames
+
+        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+        detector.maxAreaScorer.weight = 0.005; //
+
+        detector.ratioScorer.weight = 5; //
+        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
+
+        detector.enable(); // Start the detector!
     }
 
-    private String formatDegrees(double degrees)
+    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS)
     {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+        int newFrontLeftTarget;
+        int newRearLeftTarget;
+        int newFrontRightTarget;
+        int newRearRightTarget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newFrontLeftTarget = leftFrontDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRearLeftTarget = leftBackDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newFrontRightTarget = rightFrontDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newRearRightTarget = rightBackDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            leftFrontDrive.setTargetPosition(newFrontLeftTarget);
+            leftBackDrive.setTargetPosition(newRearLeftTarget);
+            rightFrontDrive.setTargetPosition(newFrontRightTarget);
+            rightBackDrive.setTargetPosition(newRearRightTarget);
+
+            // Turn On RUN_TO_POSITION
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            leftFrontDrive.setPower(Math.abs(speed));
+            leftBackDrive.setPower(Math.abs(speed));
+            rightFrontDrive.setPower(Math.abs(speed));
+            rightBackDrive.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftBackDrive.isBusy() && rightBackDrive.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newFrontRightTarget,
+                        newRearLeftTarget, newRearRightTarget);
+                telemetry.addData("Path2",  "Running at %7d :%7d",
+                        leftFrontDrive.getCurrentPosition(),
+                        rightFrontDrive.getCurrentPosition(), leftBackDrive.getCurrentPosition(),
+                        rightBackDrive.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            leftFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
 }
