@@ -71,8 +71,8 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
     private DcMotor leftBackDrive    = null;
     private DcMotor rightBackDrive   = null;
 
-    private DcMotor arm = null;
-    private DcMotor spool = null;
+    private DcMotor arm              = null;
+    private DcMotor spool            = null;
 
     //Gyro
     //private IntegratingGyroscope gyro;
@@ -92,14 +92,15 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        // Initialize the hardware variables
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "1");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "2");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "3");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "0");
 
-        arm = hardwareMap.get(DcMotor.class, "arm");
-        spool = hardwareMap.get(DcMotor.class, "spool");
+        // Initialize the hardware variables
+        leftFrontDrive      = hardwareMap.get(DcMotor.class, "1");
+        rightFrontDrive     = hardwareMap.get(DcMotor.class, "2");
+        leftBackDrive       = hardwareMap.get(DcMotor.class, "3");
+        rightBackDrive      = hardwareMap.get(DcMotor.class, "0");
+
+        arm                 = hardwareMap.get(DcMotor.class, "arm");
+        spool               = hardwareMap.get(DcMotor.class, "spool");
 
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -122,7 +123,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
 
         while(!detector.getAligned())
         {
-            timedTurn(0.4, true, 1);
+            timedTurn(0.6, false, 1);
         }
 
         encoderDrive(0.5, 18, 18, 10);
@@ -156,7 +157,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         rightBackDrive.setPower(0);
     }
     private void timedTurn(double power, boolean isRight, int timeInMS) {
-        if (isRight) {
+        if (!isRight) {
             leftFrontDrive.setPower(-power);
             rightFrontDrive.setPower(power);
             leftBackDrive.setPower(-power);
@@ -287,7 +288,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         detector.enable(); // Start the detector!
     }
 
-    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS)
+    private void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS)
     {
         int newFrontLeftTarget;
         int newRearLeftTarget;

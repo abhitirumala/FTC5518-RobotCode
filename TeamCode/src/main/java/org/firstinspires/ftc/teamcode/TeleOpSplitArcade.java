@@ -29,13 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.eventloop.opmode.*;
+import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.util.*;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -57,6 +53,7 @@ public class TeleOpSplitArcade extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime      = new ElapsedTime();
+
     private DcMotor leftFrontDrive   = null;
     private DcMotor rightFrontDrive  = null;
     private DcMotor leftBackDrive    = null;
@@ -65,8 +62,8 @@ public class TeleOpSplitArcade extends OpMode
     private DcMotor spool            = null;
     private DcMotor arm              = null;
 
-    private boolean isOnA = false;
-    private double slowModeValue = 1.0;
+    private boolean isOnA            = false;
+    private double slowModeValue     = 1.0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -77,18 +74,20 @@ public class TeleOpSplitArcade extends OpMode
         telemetry.addData("Status", "Initialized");
 
         // Initialize the hardware variables
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "1");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "2");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "3");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "0");
-        collector = hardwareMap.get(DcMotor.class, "collector");
-        spool = hardwareMap.get(DcMotor.class, "spool");
-        arm = hardwareMap.get(DcMotor.class, "arm");
+        leftFrontDrive      = hardwareMap.get(DcMotor.class, "1");
+        rightFrontDrive     = hardwareMap.get(DcMotor.class, "2");
+        leftBackDrive       = hardwareMap.get(DcMotor.class, "3");
+        rightBackDrive      = hardwareMap.get(DcMotor.class, "0");
+
+        collector           = hardwareMap.get(DcMotor.class, "collector");
+        spool               = hardwareMap.get(DcMotor.class, "spool");
+        arm                 = hardwareMap.get(DcMotor.class, "arm");
 
         leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+
         collector.setDirection(DcMotor.Direction.FORWARD);
         arm.setDirection(DcMotor.Direction.FORWARD);
         spool.setDirection(DcMotor.Direction.FORWARD);
@@ -119,7 +118,8 @@ public class TeleOpSplitArcade extends OpMode
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
-    public void loop() {
+    public void loop()
+    {
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftFrontPower;
         double rightFrontPower;
@@ -151,7 +151,7 @@ public class TeleOpSplitArcade extends OpMode
         }
 
         spool.setPower(gamepad2.right_stick_x);
-        arm.setPower(gamepad2.left_stick_y);
+        arm.setPower(gamepad2.left_stick_y * 0.85);
 
 
         // Code for Split-Arcade Driver Control
