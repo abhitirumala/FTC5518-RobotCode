@@ -33,6 +33,7 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -57,7 +58,7 @@ import java.util.Locale;
  *
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gold Autonomous Gyro Encoder", group="Autonomous")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gold-Side Autonomous", group="Autonomous")
 //@Disabled
 public class GoldAutonomousGyroEncoder extends LinearOpMode
 {
@@ -136,11 +137,11 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
 
         gyroTurn(80, 0.07, false);
 
-        encoderDrive(0.6, 48, 548, 10);
+        encoderDrive(0.8, 48, 548, 10);
 
-        gyroTurn(135, 0.05, false);
+        gyroTurn(135, 0.07, false);
 
-        encoderDrive(0.75, 48, 48, 10);
+        encoderDrive(0.8, 48, 48, 10);
 
     }
 

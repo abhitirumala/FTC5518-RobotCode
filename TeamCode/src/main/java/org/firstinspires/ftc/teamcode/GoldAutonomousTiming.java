@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -50,7 +52,7 @@ import com.disnodeteam.dogecv.DogeCV;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gold Autonomous Timing v1.5", group="Autonomous")
-//@Disabled
+@Disabled
 public class GoldAutonomousTiming extends LinearOpMode
 {
 

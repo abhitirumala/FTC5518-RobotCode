@@ -47,6 +47,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import java.io.File;
 import java.util.Locale;
@@ -61,7 +62,7 @@ import java.util.Locale;
  */
 
 @Autonomous(name="Autonomous Square 1.2", group="Autonomous")
-//@Disabled
+@Disabled
 public class AutonomousSquare extends LinearOpMode
 {
 

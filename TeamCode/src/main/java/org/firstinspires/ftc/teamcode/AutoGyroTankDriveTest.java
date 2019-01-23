@@ -41,6 +41,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import java.io.File;
 import java.util.Locale;
 /**
@@ -53,7 +54,7 @@ import java.util.Locale;
  * Maneuver: Robot drives in a square, turning after every second of travel
  */
 @Autonomous(name="Autonomous Square 1.0", group="Autonomous")
-//@Disabled
+@Disabled
 public class AutoGyroTankDriveTest extends LinearOpMode
 {
     // Declare OpMode members.
