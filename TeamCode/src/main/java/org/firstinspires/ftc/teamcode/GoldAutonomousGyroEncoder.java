@@ -84,8 +84,8 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
     private GoldAlignDetector detector;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: AndyMark Motor Encoder
-    private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;     // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 5.0 ;     // For figuring circumference
+    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
     @Override
@@ -117,29 +117,30 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         waitForStart();
         runtime.reset();
 
-        encoderDrive(0.5, 4, 4, 10);
+        encoderDrive(0.3, 2, 2, 10);
 
-        gyroTurn(-90, 0.4);
+        gyroTurn(-90, 0.08, true);
+
+        encoderDrive(0.3, 1, 1, 10);
 
         while(!detector.getAligned())
         {
-            timedTurn(0.6, false, 1);
+            leftFrontDrive.setPower(-0.05);
+            rightFrontDrive.setPower(0.05);
+            leftBackDrive.setPower(-0.05);
+            rightBackDrive.setPower(0.05);
         }
 
-        encoderDrive(0.5, 18, 18, 10);
-        encoderDrive(-0.5, 18, 18, 10);
+        encoderDrive(0.5, 22, 22, 10);
+        encoderDrive(0.5, -14, -14, 10);
 
-        gyroTurn(0, 0.4);
+        gyroTurn(80, 0.07, false);
 
-        encoderDrive(0.5, 4, 4, 10);
+        encoderDrive(0.6, 48, 548, 10);
 
-        gyroTurn(90, 0.4);
+        gyroTurn(135, 0.05, false);
 
-        encoderDrive(0.5, 24, 24, 10);
-
-        gyroTurn(135, 0.4);
-
-        encoderDrive(0.75, 12, 12, 10);
+        encoderDrive(0.75, 48, 48, 10);
 
     }
 
@@ -156,7 +157,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
-    private void timedTurn(double power, boolean isRight, int timeInMS) {
+    private void timedTurn(double power, boolean isRight) {
         if (!isRight) {
             leftFrontDrive.setPower(-power);
             rightFrontDrive.setPower(power);
@@ -168,13 +169,6 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
             leftBackDrive.setPower(power);
             rightBackDrive.setPower(-power);
         }
-
-        sleep(timeInMS);
-
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
     }
 
     private void initializeGyro()
@@ -211,50 +205,94 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         composeGyroTelemetry();
     }
 
-    private void gyroTurn(double targetAngle, double userTurnSpeed) {
-        double currentPosition = angles.firstAngle;
-        double turnSpeed = Range.clip(userTurnSpeed, -1.0, 1.0);
-        targetAngle = Range.clip(targetAngle, -180.0, 179.9);
+    private void gyroTurn(double targetAngle, double turnPower, boolean isRight) {
 
-        if (targetAngle < currentPosition) {
-            while (targetAngle+5 <= currentPosition) {
-                leftFrontDrive.setPower(-turnSpeed);
-                leftBackDrive.setPower(-turnSpeed);
-                rightFrontDrive.setPower(turnSpeed);
-                rightBackDrive.setPower(turnSpeed);
-                currentPosition = angles.firstAngle;
-
-
-                telemetry.clearAll();
-                telemetry.addData("Left Gyro Status", currentPosition);
-                telemetry.update();
-
-            }
-        } else if (targetAngle > currentPosition) {
-            while (targetAngle-5 >= currentPosition) {
-                leftFrontDrive.setPower(turnSpeed);
-                leftBackDrive.setPower(turnSpeed);
-                rightFrontDrive.setPower(-turnSpeed);
-                rightBackDrive.setPower(-turnSpeed);
-                currentPosition = angles.firstAngle;
-
-
-                telemetry.clearAll();
-                telemetry.addData("Right Gyro Status", currentPosition);
-                telemetry.update();
-            }
-
-        } else {
-            telemetry.clearAll();
-            telemetry.addData("Gyro Status", "Error");
+        if (!isRight)
+        {
             telemetry.update();
-        }
+            double turnSpeedMultiplier;
 
-        leftFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        telemetry.clearAll();
+            while ((Math.abs(angles.firstAngle - targetAngle) > 6) && opModeIsActive()) {
+                telemetry.update();
+                //turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.35;
+                turnSpeedMultiplier=1;
+
+                leftFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
+                rightFrontDrive.setPower(turnPower * turnSpeedMultiplier);
+                leftBackDrive.setPower(-turnPower * turnSpeedMultiplier);
+                rightBackDrive.setPower(turnPower * turnSpeedMultiplier);
+            }
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+            sleep(500);
+        }
+        else
+        {
+            telemetry.update();
+            //targetAngle = -targetAngle;
+            double turnSpeedMultiplier;
+
+            while ((Math.abs(angles.firstAngle - targetAngle) > 6) && opModeIsActive()) {
+                telemetry.update();
+                //turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.40;
+                turnSpeedMultiplier=1;
+
+                leftFrontDrive.setPower(turnPower * turnSpeedMultiplier);
+                rightFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
+                leftBackDrive.setPower(turnPower * turnSpeedMultiplier);
+                rightBackDrive.setPower(-turnPower * turnSpeedMultiplier);
+            }
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+            sleep(500);
+        }
+//        double currentPosition = angles.firstAngle;
+//        double turnSpeed = Range.clip(userTurnSpeed, -1.0, 1.0);
+//        targetAngle = Range.clip(targetAngle, -180.0, 179.9);
+//
+//        if (targetAngle < currentPosition) {
+//            while (targetAngle+5 <= currentPosition) {
+//                leftFrontDrive.setPower(-turnSpeed);
+//                leftBackDrive.setPower(-turnSpeed);
+//                rightFrontDrive.setPower(turnSpeed);
+//                rightBackDrive.setPower(turnSpeed);
+//                currentPosition = angles.firstAngle;
+//
+//
+//                telemetry.clearAll();
+//                telemetry.addData("Left Gyro Status", currentPosition);
+//                telemetry.update();
+//
+//            }
+//        } else if (targetAngle > currentPosition) {
+//            while (targetAngle-5 >= currentPosition) {
+//                leftFrontDrive.setPower(turnSpeed);
+//                leftBackDrive.setPower(turnSpeed);
+//                rightFrontDrive.setPower(-turnSpeed);
+//                rightBackDrive.setPower(-turnSpeed);
+//                currentPosition = angles.firstAngle;
+//
+//
+//                telemetry.clearAll();
+//                telemetry.addData("Right Gyro Status", currentPosition);
+//                telemetry.update();
+//            }
+//
+//        } else {
+//            telemetry.clearAll();
+//            telemetry.addData("Gyro Status", "Error");
+//            telemetry.update();
+//        }
+//
+//        leftFrontDrive.setPower(0);
+//        leftBackDrive.setPower(0);
+//        rightFrontDrive.setPower(0);
+//        rightBackDrive.setPower(0);
+//        telemetry.clearAll();
     }
 
 //    private void calibrateGyro()
