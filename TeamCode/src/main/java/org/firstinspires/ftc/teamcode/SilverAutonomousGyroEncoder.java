@@ -74,8 +74,6 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
     private DcMotor spool            = null;
 
     //Gyro
-    //private IntegratingGyroscope gyro;
-    //private ModernRoboticsI2cGyro mrGyro;
     private BNO055IMU imu;
     private Orientation angles;
 
@@ -178,19 +176,13 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
         parameters.loggingEnabled = true;
         parameters.loggingTag     = "IMU";
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        imu2 = hardwareMap.get(BNO055IMU.class, "imu2");
         imu.initialize(parameters);
-//        imu2.initialize(parameters);
         BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
-//        BNO055IMU.CalibrationData calibrationData2 = imu2.readCalibrationData();
         String filename = "AdafruitIMU1Calibration.json";
         File file = AppUtil.getInstance().getSettingsFile(filename);
         ReadWriteFile.writeFile(file, calibrationData.serialize());
         telemetry.log().add("saved to '%s'", filename);
-//        String filename2 = "AdafruitIMU2Calibration.json";
-//        File file2 = AppUtil.getInstance().getSettingsFile(filename2);
-//        ReadWriteFile.writeFile(file2, calibrationData2.serialize());
-//        telemetry.log().add("saved to '%s'", filename2);
+
         //Read Calibration Data
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -199,21 +191,19 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
-//        imu2.initialize(parameters);
         composeGyroTelemetry();
     }
 
     private void gyroTurn(double targetAngle, double turnPower, boolean isRight) {
 
-        if (!isRight)
-        {
+        if (!isRight) {
             telemetry.update();
             double turnSpeedMultiplier;
 
             while ((Math.abs(angles.firstAngle - targetAngle) > 6) && opModeIsActive()) {
                 telemetry.update();
                 //turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.35;
-                turnSpeedMultiplier=1;
+                turnSpeedMultiplier = 1;
 
                 leftFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
                 rightFrontDrive.setPower(turnPower * turnSpeedMultiplier);
@@ -225,9 +215,7 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
             sleep(500);
-        }
-        else
-        {
+        } else {
             telemetry.update();
             //targetAngle = -targetAngle;
             double turnSpeedMultiplier;
@@ -235,7 +223,7 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
             while ((Math.abs(angles.firstAngle - targetAngle) > 6) && opModeIsActive()) {
                 telemetry.update();
                 //turnSpeedMultiplier = (Math.toRadians(targetAngle - angles.firstAngle) * 0.5) + 0.40;
-                turnSpeedMultiplier=1;
+                turnSpeedMultiplier = 1;
 
                 leftFrontDrive.setPower(turnPower * turnSpeedMultiplier);
                 rightFrontDrive.setPower(-turnPower * turnSpeedMultiplier);
@@ -248,60 +236,7 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
             rightBackDrive.setPower(0);
             sleep(500);
         }
-//        double currentPosition = angles.firstAngle;
-//        double turnSpeed = Range.clip(userTurnSpeed, -1.0, 1.0);
-//        targetAngle = Range.clip(targetAngle, -180.0, 179.9);
-//
-//        if (targetAngle < currentPosition) {
-//            while (targetAngle+5 <= currentPosition) {
-//                leftFrontDrive.setPower(-turnSpeed);
-//                leftBackDrive.setPower(-turnSpeed);
-//                rightFrontDrive.setPower(turnSpeed);
-//                rightBackDrive.setPower(turnSpeed);
-//                currentPosition = angles.firstAngle;
-//
-//
-//                telemetry.clearAll();
-//                telemetry.addData("Left Gyro Status", currentPosition);
-//                telemetry.update();
-//
-//            }
-//        } else if (targetAngle > currentPosition) {
-//            while (targetAngle-5 >= currentPosition) {
-//                leftFrontDrive.setPower(turnSpeed);
-//                leftBackDrive.setPower(turnSpeed);
-//                rightFrontDrive.setPower(-turnSpeed);
-//                rightBackDrive.setPower(-turnSpeed);
-//                currentPosition = angles.firstAngle;
-//
-//
-//                telemetry.clearAll();
-//                telemetry.addData("Right Gyro Status", currentPosition);
-//                telemetry.update();
-//            }
-//
-//        } else {
-//            telemetry.clearAll();
-//            telemetry.addData("Gyro Status", "Error");
-//            telemetry.update();
-//        }
-//
-//        leftFrontDrive.setPower(0);
-//        leftBackDrive.setPower(0);
-//        rightFrontDrive.setPower(0);
-//        rightBackDrive.setPower(0);
-//        telemetry.clearAll();
     }
-
-//    private void calibrateGyro()
-//    {
-//        telemetry.addData("Gyro: ", "Do nottouch while Gyro is Calibrating");
-//        telemetry.update();
-//        mrGyro.calibrate();
-//        while (mrGyro.isCalibrating())
-//        {}
-//        telemetry.clearAll();
-//    }
 
     private void initializeGoldAlignDetector()
     {
