@@ -116,28 +116,30 @@ public class SilverAutonomousGyroEncoder extends LinearOpMode
         waitForStart();
         runtime.reset();
 
-        encoderDrive(0.3, 2, 2, 10);
+        encoderDrive(0.5, 1, 1, 10);
 
-        gyroTurn(-90, 0.08, true);
+        gyroTurn(-60, 0.2, true);
 
-        encoderDrive(0.3, 1, 1, 10);
+        encoderDrive(0.5, 1, 1, 10);
 
         while(!detector.getAligned())
         {
-            leftFrontDrive.setPower(-0.05);
-            rightFrontDrive.setPower(0.05);
-            leftBackDrive.setPower(-0.05);
-            rightBackDrive.setPower(0.05);
+            leftFrontDrive.setPower(-0.1);
+            rightFrontDrive.setPower(0.1);
+            leftBackDrive.setPower(-0.1);
+            rightBackDrive.setPower(0.1);
         }
 
-        encoderDrive(0.5, 22, 22, 10);
+        encoderDrive(0.75, 30, 30, 10);
+        encoderDrive(0.5, -6, -6, 10);
+
 
         if (angles.firstAngle > 0)
-            gyroTurn(10, 0.07, true);
+            gyroTurn(8, 0.07, true);
         else
-            gyroTurn(0, 0.07, false);
+            gyroTurn(-8, 0.07, false);
 
-        encoderDrive(0.6, 12, 12, 10);
+        encoderDrive(0.9, 30, 30, 10);
     }
 
 
