@@ -118,11 +118,10 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
         waitForStart();
         runtime.reset();
 
-        encoderDrive(0.5, 1, 1, 10);
+        encoderDrive(0.5, 1.5, 1.5, 10);
 
         gyroTurn(-60, 0.2, true);
 
-        encoderDrive(0.5, 1, 1, 10);
 
         while(!detector.getAligned())
         {
@@ -132,16 +131,20 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
             rightBackDrive.setPower(0.05);
         }
 
-        encoderDrive(0.5, 27, 27, 10);
-        encoderDrive(0.5, -25, -25, 10);
+        timedTurn(0.5, true);
+        sleep (400);
+        timedTurn(0, true);
+
+        encoderDrive(0.9, 27, 27, 10);
+        encoderDrive(0.9, -27, -27, 10);
 
         gyroTurn(75, 0.07, false);
 
-        encoderDrive(0.8, 55, 55, 10);
+        encoderDrive(0.9, 50, 50, 10);
 
-        gyroTurn(115, 0.07, false);
+        gyroTurn(-45, 0.15, true);
 
-        encoderDrive(0.9, 48, 48, 10);
+        encoderDrive(1.0, -70, -70, 10);
 
     }
 
@@ -333,7 +336,7 @@ public class GoldAutonomousGyroEncoder extends LinearOpMode
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(500);
+            sleep(300);
         }
     }
 
