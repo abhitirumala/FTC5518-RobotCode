@@ -40,8 +40,8 @@ public class GoldAlignDetector extends DogeCVDetector {
 
     // Detector settings
     public boolean debugAlignment = true; // Show debug lines to show alignment settings
-    public double alignPosOffset  = 500;    // How far from center frame is aligned
-    public double alignSize       = 300;  // How wide is the margin of error for alignment
+    public double alignPosOffset  = 0;    // How far from center frame is aligned
+    public double alignSize       = 75;  // How wide is the margin of error for alignment
 
     public DogeCV.AreaScoringMethod areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Setting to decide to use MaxAreaScorer or PerfectAreaScorer
 

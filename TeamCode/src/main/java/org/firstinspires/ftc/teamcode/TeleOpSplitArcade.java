@@ -83,10 +83,10 @@ public class TeleOpSplitArcade extends OpMode
         spool               = hardwareMap.get(DcMotor.class, "spool");
         arm                 = hardwareMap.get(DcMotor.class, "arm");
 
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         collector.setDirection(DcMotor.Direction.FORWARD);
         arm.setDirection(DcMotor.Direction.FORWARD);
@@ -121,10 +121,7 @@ public class TeleOpSplitArcade extends OpMode
     public void loop()
     {
         // Setup a variable for each drive wheel to save power level for telemetry
-        double leftFrontPower;
-        double rightFrontPower;
-        double leftBackPower;
-        double rightBackPower;
+
 
 
         if(gamepad1.a && !isOnA) {
@@ -155,23 +152,48 @@ public class TeleOpSplitArcade extends OpMode
 
 
         // Code for Split-Arcade Driver Control
-        double drive =  gamepad1.left_stick_y * slowModeValue;
-        double turn  =  -gamepad1.right_stick_x;
-        leftFrontPower    = Range.clip(drive + turn, -1.0, 1.0);
-        rightFrontPower   = Range.clip(drive - turn, -1.0, 1.0);
-        leftBackPower     = Range.clip(drive + turn, -1.0, 1.0);
-        rightBackPower    = Range.clip(drive - turn, -1.0, 1.0);
+        double leftStickX = gamepad1.left_stick_x;
+        double leftStickY = gamepad1.left_stick_y;
+        double rightStickX = gamepad1.right_stick_x; //added negitive
 
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftBackDrive.setPower(leftBackPower);
-        rightBackDrive.setPower(rightBackPower);
+        //Calculations for motor power
+        double r = Math.hypot(leftStickX, -leftStickY);
+        double robotAngle = Math.atan2(-leftStickY, leftStickX) - Math.PI / 4;
+        double rotate = rightStickX;
+        final double frontLeft = r * Math.cos(robotAngle) + rotate;
+        final double frontRight = r * Math.sin(robotAngle) - rotate;
+        final double rearLeft = r * Math.sin(robotAngle) + rotate;
+        final double rearRight = r * Math.cos(robotAngle) - rotate;
+
+        if(leftStickX != 0 || leftStickY != 0 || rightStickX != 0) {
+            if (leftStickX > 0.1 || leftStickX < -0.1) {
+                //Motor Power Sets
+                leftFrontDrive.setPower(frontLeft);
+                rightFrontDrive.setPower(frontRight);
+                leftBackDrive.setPower(rearLeft);
+                rightBackDrive.setPower(rearRight);
+            } else {
+                //Motor Power Sets
+                leftFrontDrive.setPower(frontLeft * slowModeValue);
+                rightFrontDrive.setPower(frontRight * slowModeValue);
+                leftBackDrive.setPower(rearLeft * slowModeValue);
+                rightBackDrive.setPower(rearRight * slowModeValue);
+            }
+        }
+        else
+        {
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+        }
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Slow-mode: ", isOnA);
-        telemetry.addData("Front Motors", "leftFront (%.2f), rightFront (%.2f), ", leftFrontPower, rightFrontPower);
-        telemetry.addData("Back Motors", "leftBack (%.2f), rightBack (%.2f), ", leftBackPower, rightBackPower);
+        telemetry.addData("Front Motors", "leftFront (%.2f), rightFront (%.2f), ", frontLeft, frontRight);
+        telemetry.addData("Back Motors", "leftBack (%.2f), rightBack (%.2f), ", rearLeft, rearRight);
 
     }
 
