@@ -73,13 +73,13 @@ import java.util.Locale;
 
 /**
  * File Created bu Abhiram T. (5518)
- * Version 3.0
+ * Version 6.0
  * Date: 1/23/2018
  *
  *
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gold-Side Auto Webcam Test", group="Autonomous")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gold-Side Auto 2/14", group="Autonomous")
 //@Disabled
 public class GoldAutoWebcam extends LinearOpMode
 {
@@ -102,8 +102,6 @@ public class GoldAutoWebcam extends LinearOpMode
     private DcMotor winch            = null;
 
     //Gyro
-    //private IntegratingGyroscope gyro;
-    //private ModernRoboticsI2cGyro mrGyro;
     private BNO055IMU imu;
     private Orientation angles;
 
@@ -122,7 +120,7 @@ public class GoldAutoWebcam extends LinearOpMode
     GoldAlignDetector detector;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: AndyMark Motor Encoder
-    private static final double     DRIVE_GEAR_REDUCTION    = 1 ;     // This is < 1.0 if geared UP
+    private static final double     DRIVE_GEAR_REDUCTION    = 2 ;     // This is < 1.0 if geared UP
     private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
@@ -165,7 +163,7 @@ public class GoldAutoWebcam extends LinearOpMode
         sleep (12500);
         winch.setPower(0);
 
-        encoderDrive(.8, -15, -15 , 10);
+        encoderDrive(.8, 4, 4 , 10);
 
 
 
@@ -175,7 +173,7 @@ public class GoldAutoWebcam extends LinearOpMode
 
         gyroTurn(90, 0.7, false );
 
-        encoderDrive(0.8, -10, -10, 10);
+        encoderDrive(0.8, 10, 10, 10);
 
         gyroTurn(30, 0.7, true);
 
@@ -195,12 +193,12 @@ public class GoldAutoWebcam extends LinearOpMode
         timedTurn(0, true);
 
 
-        encoderDrive(0.9, -32, -32, 10);
-        encoderDrive(0.9, 10, 10, 10);
+        encoderDrive(0.9, 32, 32, 10);
+        encoderDrive(0.9, -10, -10, 10);
 
         gyroTurn(90, 0.5, false);
 
-        encoderDrive(0.9, -30, -30, 10);
+        encoderDrive(0.9, 30, 30, 10);
 
 
         /*encoderDrive(0.5, 1.5, 1.5, 10);
@@ -280,7 +278,8 @@ public class GoldAutoWebcam extends LinearOpMode
         composeGyroTelemetry();
     }
 
-    private void gyroTurn(double targetAngle, double turnPower, boolean isRight) {
+    private void gyroTurn(double targetAngle, double turnPower, boolean isRight)
+    {
 
         telemetry.update();
         double initialAngle = angles.firstAngle;
@@ -290,18 +289,18 @@ public class GoldAutoWebcam extends LinearOpMode
         {
             telemetry.update();
 
-            encoderDrive(turnPower, -encoderDriveDistance, encoderDriveDistance, 10);
+            encoderDrive(turnPower, encoderDriveDistance, -encoderDriveDistance, 10);
         }
         else
         {
             telemetry.update();
 
-            encoderDrive(turnPower, encoderDriveDistance, -encoderDriveDistance, 10);
+            encoderDrive(turnPower, -encoderDriveDistance, encoderDriveDistance, 10);
         }
 
-        turnPower /= 3;
+        turnPower /= 4;
 
-        while ((Math.abs(angles.firstAngle - targetAngle) > 3) && opModeIsActive()) {
+        while ((Math.abs(angles.firstAngle - targetAngle) > 2) && opModeIsActive()) {
             telemetry.update();
 
             if (angles.firstAngle < targetAngle)
@@ -327,7 +326,6 @@ public class GoldAutoWebcam extends LinearOpMode
         rightBackDrive.setPower(0);
         sleep(150);
     }
-
 
     private void initializeGoldAlignDetector()
     {
@@ -498,6 +496,9 @@ public class GoldAutoWebcam extends LinearOpMode
 
     private void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS)
     {
+        leftInches = -leftInches;
+        rightInches = -rightInches;
+
         int newFrontLeftTarget;
         int newRearLeftTarget;
         int newFrontRightTarget;
@@ -561,7 +562,7 @@ public class GoldAutoWebcam extends LinearOpMode
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(150);
+            sleep(50);
         }
     }
 

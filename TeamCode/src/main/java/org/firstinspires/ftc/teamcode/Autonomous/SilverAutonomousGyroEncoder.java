@@ -44,6 +44,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import java.io.File;
 import java.util.Locale;
@@ -57,7 +58,7 @@ import java.util.Locale;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Silver-Side Autonomous", group="Autonomous")
-//@Disabled
+@Disabled
 public class SilverAutonomousGyroEncoder extends LinearOpMode
 {
 

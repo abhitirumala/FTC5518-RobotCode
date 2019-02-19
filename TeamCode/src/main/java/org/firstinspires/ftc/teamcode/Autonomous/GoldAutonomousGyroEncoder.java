@@ -59,7 +59,7 @@ import java.util.Locale;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gold-Side Autonomous", group="Autonomous")
-//@Disabled
+@Disabled
 public class GoldAutonomousGyroEncoder extends LinearOpMode
 {
 
