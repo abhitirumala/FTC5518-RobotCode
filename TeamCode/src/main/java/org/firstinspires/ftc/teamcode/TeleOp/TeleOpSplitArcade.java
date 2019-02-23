@@ -144,7 +144,7 @@ public class TeleOpSplitArcade extends OpMode
     {
 //        double interationStart = runtime.now(TimeUnit.SECONDS);
         // Setup a variable for each drive wheel to save power level for telemetry
-        telemetry.addData("Reached start loop", "");
+        //telemetry.addData("Reached start loop", "");
 
 
         if(gamepad1.a && !isOnA) {
@@ -157,22 +157,22 @@ public class TeleOpSplitArcade extends OpMode
         else if(!gamepad1.a)
             isOnA = false;
 
-        telemetry.addData("Reached slowmode", "");
+        //telemetry.addData("Reached slowmode", "");
 
         if(gamepad2.right_bumper)
         {
-            collector.setPower(0.6);
+            collector.setPower(0.8);
         }
         else if (gamepad2.left_bumper)
         {
-            collector.setPower(-0.6);
+            collector.setPower(-0.8);
         }
         else
         {
             collector.setPower(0);
         }
 
-        telemetry.addData("Reached collector", "");
+        //telemetry.addData("Reached collector", "");
 
         if (gamepad1.right_bumper)
             winch.setPower(1);
@@ -181,26 +181,18 @@ public class TeleOpSplitArcade extends OpMode
         else
             winch.setPower(0);
 
-        telemetry.addData("Reached winch", "");
+        //telemetry.addData("Reached winch", "");
 
 
 
         spool.setPower(gamepad2.right_stick_x);
 
-        telemetry.addData("Reached spool", "");
+        //telemetry.addData("Reached spool", "");
 
         arm.setPower(gamepad2.left_stick_y * 0.75);
 
-        telemetry.addData("Reached arm", "");
+        //telemetry.addData("Reached arm", "");
 
-
-        /*double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-        double rightX = gamepad1.right_stick_x;
-        final double v1 = r * Math.cos(robotAngle) + rightX;
-        final double v2 = r * Math.sin(robotAngle) - rightX;
-        final double v3 = r * Math.sin(robotAngle) + rightX;
-        final double v4 = r * Math.cos(robotAngle) - rightX;*/
 
         double forward = gamepad1.left_stick_y;
         double right = gamepad1.left_stick_x;
@@ -216,22 +208,19 @@ public class TeleOpSplitArcade extends OpMode
         leftBackDrive.setPower(v3 * slowModeValue);
         rightBackDrive.setPower(v4 * slowModeValue);
 
-        telemetry.addData("Reached drive", "");
+        //telemetry.addData("Reached drive", "");
 
 
         // Show the elapsed game time and wheel power.
         //telemetry.addData("Status", "Run Time: " + runtime.toString());
         //telemetry.addData("Status", "Iteration Loop Time: " + (runtime.now(TimeUnit.SECONDS) - interationStart));
         telemetry.addData("Slow-mode: ", isOnA);
-        /*telemetry.addData("Calculated Front Motors: ", "leftFront (%.2f), rightFront (%.2f), ", v1, v2);
+        telemetry.addData("Calculated Front Motors: ", "leftFront (%.2f), rightFront (%.2f), ", v1, v2);
         telemetry.addData("Calculated Back Motors: ", "leftBack (%.2f), rightBack (%.2f), ", v3, v4);
 
-        telemetry.addData("Actual Front Motors: ", "leftFront (%.2f), rightFront (%.2f), ", leftFrontDrive.getPower(), rightFrontDrive.getPower());
+        /*telemetry.addData("Actual Front Motors: ", "leftFront (%.2f), rightFront (%.2f), ", leftFrontDrive.getPower(), rightFrontDrive.getPower());
         telemetry.addData("Actual Back Motors: ", "leftBack (%.2f), rightBack (%.2f), ", leftBackDrive.getPower(), rightBackDrive.getPower());
-        telemetry.addData("Arm: ", arm.getCurrentPosition());
-
-*/
-        telemetry.clearAll();
+        telemetry.addData("Arm: ", arm.getCurrentPosition());*/
 
     }
 

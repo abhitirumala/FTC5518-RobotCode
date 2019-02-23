@@ -74,7 +74,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Manual Encoder Test", group="TeleOp")
-//@Disabled
+@Disabled
 public class ManualEncoderTest extends OpMode
 {
 

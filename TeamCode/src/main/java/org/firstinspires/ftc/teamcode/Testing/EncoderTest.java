@@ -51,6 +51,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Encoder Test", group="Autonomous")
-//@Disabled
+@Disabled
 public class EncoderTest extends LinearOpMode
 {
 
